@@ -7,9 +7,10 @@ const data = {
             brand:"Nike",
             price:12,
             description:"high quality product",
-            rating:4.5,
+            rating:2.5,
             numReviews:10,
-            image:'/images/p1.jpg'
+            image:'/images/p1.jpg',
+            numberInstock:20
         },
         {
             _id:2,
@@ -18,9 +19,10 @@ const data = {
             brand:"Adidas",
             price:20,
             description:"high quality product",
-            rating:4.5,
+            rating:1.5,
             numReviews:10,
-            image:'/images/p2.jpg'
+            image:'/images/p2.jpg',
+            numberInstock:20
         },
         {
             _id:3,
@@ -29,9 +31,10 @@ const data = {
             brand:"Puma",
             price:30,
             description:"high quality product",
-            rating:4.5,
+            rating:3,
             numReviews:10,
-            image:'/images/p3.jpg'
+            image:'/images/p3.jpg',
+            numberInstock:13
         },
         {
             _id:4,
@@ -42,7 +45,8 @@ const data = {
             description:"high quality product",
             rating:4.5,
             numReviews:10,
-            image:'/images/p6.jpg'
+            image:'/images/p6.jpg',
+            numberInstock:2
         },
         {
             _id:5,
@@ -53,7 +57,8 @@ const data = {
             description:"high quality product",
             rating:4.5,
             numReviews:10,
-            image:'/images/p5.jpg'
+            image:'/images/p5.jpg',
+            numberInstock:0
         },
         {
             _id:6,
@@ -64,7 +69,8 @@ const data = {
             description:"high quality product",
             rating:4.5,
             numReviews:10,
-            image:'/images/p4.jpg'
+            image:'/images/p4.jpg',
+            numberInstock:3
         },
     ]
 }
