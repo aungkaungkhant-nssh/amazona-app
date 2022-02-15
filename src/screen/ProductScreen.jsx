@@ -1,18 +1,25 @@
-import React, { useEffect } from 'react'
-import { Link,useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link,useParams,useNavigate } from 'react-router-dom'
 import Rating from '../components/Rating'
 import { useDispatch, useSelector } from 'react-redux';
 import { detailProduct } from '../redux/product/productAction';
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
+
 function ProductScreen() {
   let params = useParams();
+  let navigate = useNavigate();
   let data =useSelector(state => state.productDetail)
   let {product,error,loading} =data;
   const dispatch = useDispatch();
+  const [qty,setQty] = useState(1)
   useEffect(()=>{
     dispatch(detailProduct(params.id));
   },[])
+  const handleClick = ()=>{
+    navigate(`/cart/${params.id}?qty=${qty}`)
+  }
+ 
   return (
     <div>
          
@@ -61,9 +68,32 @@ function ProductScreen() {
                                     </div>
                                 </div>
                             </li>
-                            <li>
-                                <button className="primary block">Add to Cart</button>
-                            </li>
+                            
+                              {
+                                product.numberInstock >0 && (
+                                  <>
+                                    <li>
+                                      <div className="row">
+                                          <div>QTY</div>
+                                          <div>
+                                              <select value={qty} onChange={e => setQty(e.target.value)}>
+                                                {
+                                                  
+                                                  [...Array(product.numberInstock).keys()].map((i)=>(
+                                                    <option key={i} value={i+1}>{i+1}</option>
+                                                  )) //[0,1,2,3,4].map()
+                                                }
+                                              </select>
+                                          </div>
+                                      </div>
+                                    
+                                    </li>
+                                    <button className="primary block" style={{marginTop:"2.5rem"}} onClick={handleClick}>Add to Cart</button>
+                                   </>
+                                )
+                              }
+                               
+                            
                         </ul>
                   </div>
               </div>
