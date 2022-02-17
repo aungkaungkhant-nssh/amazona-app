@@ -19,7 +19,7 @@ export const cartReducer = (state = cartInitialState,action)=>{
                 existItem.qty+=item.qty;
                 return{
                     ...state,
-                    cartItems:state.cartItems.map((c)=> c.product === existItem.product ?existItem:c)
+                    cartItems:state.cartItems.map((c)=> c.product === existItem.product ? item:c)
                 }
             }else{
                 return {...state,cartItems:[...state.cartItems,item]}
