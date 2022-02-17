@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { Link, useParams,useSearchParams,useNavigate } from 'react-router-dom'
 import Messagebox from '../components/MessageBox';
-import { addToCart } from '../redux/cart/cartAction';
+import { addToCart, removeToCart } from '../redux/cart/cartAction';
 const CartScreen = () => {
     let params= useParams();
     const [searchParams] = useSearchParams();
@@ -20,6 +20,9 @@ const CartScreen = () => {
     },[params.id,qty]);
     const checkoutHandler=()=>{
         navigate(`/signIn?redirect=shipping`)
+    }
+    const removeCartItem=(id)=>{
+        dispatch(removeToCart(id))
     }
     return (
         <div className="row top">
@@ -58,7 +61,7 @@ const CartScreen = () => {
                                             </div>
                                             <div>$ {i.price}</div>
                                             <div>
-                                                <button type="button">
+                                                <button type="button" onClick={()=>removeCartItem(i.product)}>
                                                     Delete
                                                 </button>
                                             </div>
