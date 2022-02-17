@@ -3,7 +3,11 @@ import { BrowserRouter,Routes,Route,Link } from "react-router-dom";
 import HomeScreen from './screen/HomeScreen';
 import ProductScreen from './screen/ProductScreen';
 import CartScreen from './screen/CartScreen';
+import { useSelector } from 'react-redux';
 function App() {
+   const cart=useSelector((state) => state.cart);
+   const {cartItems}=cart;
+
   return (
     <BrowserRouter>
          <div className="grid-container">
@@ -12,7 +16,14 @@ function App() {
                 <Link to="/" className="brand">amazona</Link>
             </div>
             <div>
-                <a href="">cart</a>
+                <Link to="/cart">
+                    Cart{
+                        cartItems.length>0 &&
+                        (
+                            <span className="badge">{cartItems.length}</span>
+                        )
+                    }
+                </Link>
                 <a href="">sing in</a>
             </div>
         </header>

@@ -21,6 +21,7 @@ export const listProducts = ()=>{
 }
 
 export const detailProduct =(productId) => async(dispatch)=>{
+        
         dispatch({
             type:PRODUCT_DETAIL_REQUEST
         })
@@ -37,4 +38,5 @@ export const detailProduct =(productId) => async(dispatch)=>{
                 payload:err.response && err.response.data.message || err.message
             })
         }
+        
 }   
