@@ -19,7 +19,7 @@ const CartScreen = () => {
         
     },[params.id,qty]);
     const checkoutHandler=()=>{
-        navigate(`/signIn?redirect=shipping`)
+        navigate(`/signin?redirect=shipping`)
     }
     const removeCartItem=(id)=>{
         dispatch(removeToCart(id))
