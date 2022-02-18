@@ -82,7 +82,7 @@ const CartScreen = () => {
                             </h2>
                         </li>
                         <li>
-                            <button className="primary block" onClick={checkoutHandler}>Proceed To Checkout</button>
+                            <button className="primary block" onClick={checkoutHandler} disabled={cartItems.length===0}>Proceed To Checkout</button>
                         </li>
                     </ul>
                 </div>
