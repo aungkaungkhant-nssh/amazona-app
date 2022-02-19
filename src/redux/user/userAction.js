@@ -1,5 +1,5 @@
 import  Axios  from "axios";
-import { USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS,USER_SIGNIN_FAIL, USER_SIGNOUT } from "./userType"
+import { USER_SIGNIN_REQUEST, USER_SIGNIN_SUCCESS,USER_SIGNIN_FAIL, USER_SIGNOUT, USER_SIGNUP_REQUEST, USER_SIGNUP_FAIL, USER_SIGNUP_SUCCESS } from "./userType"
 
 export const signin = (email,password) => async(dispatch)=>{
     
@@ -17,8 +17,26 @@ export const signin = (email,password) => async(dispatch)=>{
     }
 }
 
-export const signout = ()=> async(dispatch)=>{
-    dispatch({type:USER_SIGNOUT});
+export const signup =(name,email,password)=>async(dispatch)=>{
+    dispatch({type:USER_SIGNUP_REQUEST});
+    try{
+        let {data} = await Axios.post('/api/users/signup',{name,email,password})
+        dispatch({type:USER_SIGNUP_SUCCESS,payload:data});
+        dispatch({type:USER_SIGNIN_SUCCESS,payload:data})
+        localStorage.setItem("userInfo",JSON.stringify(data));
+    }catch(err){
+        dispatch({
+            type:USER_SIGNUP_FAIL,
+            payload:err.response && err.response.data.message || err.message
+        });
+    }
+}
+
+export const signout = ()=> async(dispatch,getState)=>{
+    
+    localStorage.removeItem("cartItems");
+    getState().cart.cartItems=[];
     localStorage.removeItem("userInfo");
-    localStorage.removeItem("cartItems")
+    dispatch({type:USER_SIGNOUT});
+    
 }
