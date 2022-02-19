@@ -16,7 +16,7 @@ const SigninScreen = () => {
     let navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const redirect = searchParams.get("redirect")? "/"+searchParams.get("redirect") :"/";
-  
+    
     const submitHandler=(e)=>{
         e.preventDefault();
         dispatch(signin(email,password))
@@ -29,12 +29,13 @@ const SigninScreen = () => {
     },[navigate,userInfo,redirect])
     return (
         <div>
+             { loading && <LoadingBox />  }
+             { error && <MessageBox variant="danger">{error}</MessageBox>}
             <form  className="form" onSubmit={submitHandler}>
                 <div>
                     <h1>Sign In</h1>
                 </div>
-                { loading && <LoadingBox />  }
-                { error && <MessageBox variant="danger">{error}</MessageBox>}
+               
                 <div>
                     <label htmlFor="email">Email Address</label>
                     <input type="email" id="email" placeholder="Enter email" value={email} onChange={(e)=>setEmail(e.target.value)}/>
@@ -50,7 +51,7 @@ const SigninScreen = () => {
                 <div>
                     <label htmlFor=""></label>
                     <div>
-                        New customer? <Link to="/register">Create your account</Link>
+                        New customer? <Link to={`/signup?redirect=${redirect.split('/')[1]}`}>Create your account</Link>
                     </div>
                 </div>
             </form>
