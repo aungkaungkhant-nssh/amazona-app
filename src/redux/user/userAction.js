@@ -37,6 +37,7 @@ export const signout = ()=> async(dispatch,getState)=>{
     localStorage.removeItem("cartItems");
     getState().cart.cartItems=[];
     localStorage.removeItem("userInfo");
+    localStorage.removeItem("shippingAddress")
     dispatch({type:USER_SIGNOUT});
     
 }
