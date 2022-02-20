@@ -10,7 +10,7 @@ function PaymentMethodScreen() {
   const cart = useSelector(state => state.cart);
   const {shippingAddress} = cart;
 
-  console.log()
+
 
   const submitHandler =(e)=>{
         e.preventDefault();
