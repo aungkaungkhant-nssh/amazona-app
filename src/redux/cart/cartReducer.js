@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "./cartType";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_SHIPPINGE_ADDRESS } from "./cartType";
 
 const cartInitialState={
     cartItems:
@@ -6,6 +6,10 @@ const cartInitialState={
         ? JSON.parse(localStorage.getItem("cartItems"))
         : []
     ,
+    shippingAddress:
+        localStorage.getItem("shippingAddress")
+        ? JSON.parse(localStorage.getItem("shippingAddress"))
+        :{}
     
 };
 
@@ -28,6 +32,11 @@ export const cartReducer = (state = cartInitialState,action)=>{
                 return {
                     ...state,
                     cartItems:state.cartItems.filter((c)=>c.product!==action.payload)
+                }
+        case CART_SAVE_SHIPPINGE_ADDRESS:
+                return {
+                    ...state,
+                    shippingAddress:action.payload
                 }
         default:return state;
     }
