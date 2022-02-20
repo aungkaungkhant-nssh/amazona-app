@@ -8,6 +8,7 @@ import SigninScreen from './screen/SignInScreen';
 import { signout } from './redux/user/userAction';
 import SignUpScreen from './screen/SignUpScreen';
 import ShippingAddressScreen from './screen/ShippingAddressScreen';
+import PaymentMethodScreen from './screen/PaymentMethodScreen';
 function App() {
    const cart=useSelector((state) => state.cart);
    const {cartItems}=cart;
@@ -68,6 +69,7 @@ function App() {
                 <Route path="/signin" element={< SigninScreen/>}></Route>
                 <Route path="/signup" element={<SignUpScreen />}></Route>
                 <Route path="/shipping" element={<ShippingAddressScreen />}></Route>
+                <Route path="/payment" element={<PaymentMethodScreen />}></Route>
             </Routes>
         </main>
         <footer className="row center">
