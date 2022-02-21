@@ -1,4 +1,4 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_PAYMENT_METHOD, CART_SAVE_SHIPPINGE_ADDRESS } from "./cartType";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM, CART_SAVE_PAYMENT_METHOD, CART_SAVE_SHIPPINGE_ADDRESS ,CART_EMPTY} from "./cartType";
 
 const cartInitialState={
     cartItems:
@@ -44,6 +44,9 @@ export const cartReducer = (state = cartInitialState,action)=>{
                     ...state,
                     paymentMethod:action.payload
                 }
+        case CART_EMPTY:
+            return { ...state, cartItems: [] };
+            
         default:return state;
     }
 }
