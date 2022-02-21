@@ -1,16 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CheckOutStep from '../components/CheckOutStep';
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { Link } from 'react-router-dom';
+import { createOrder } from '../redux/order/orderAction';
+import { useNavigate } from 'react-router';
+import { ORDER_CREATE_RESET } from '../redux/order/orderType';
 const PlaceOrderScreen =()=>{
     const cart = useSelector(state => state.cart);
+    const orderCreate = useSelector(state => state.orderCreate);
+    const {loading,error,success,order} = orderCreate;
     const toPrice = (price) => Number(price.toFixed(2));
 
-    cart.itemPrice = toPrice(cart.cartItems.reduce((a,c)=> a+ c.qty*c.price,0));
+    cart.itemsPrice = toPrice(cart.cartItems.reduce((a,c)=> a+ c.qty*c.price,0));
     cart.shippingPrice= toPrice(cart.cartItems.reduce((a,c)=> a+ c.qty*c.price,0))> 100 ? toPrice(0): toPrice(100);
-    cart.taxPrice = toPrice(0.15*cart.itemPrice);
+    cart.taxPrice = toPrice(0.15*cart.itemsPrice);
 
-    cart.orderTotal=cart.itemPrice + cart.shippingPrice + cart.taxPrice
+    cart.totalPrice=toPrice(cart.itemsPrice + cart.shippingPrice + cart.taxPrice);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const placeOrderHandler =(e)=>{
+        dispatch(createOrder({...cart,orderItems:cart.cartItems}))
+    }
+    useEffect(()=>{
+        if(success){
+            navigate(`/order/${order._id}`);
+            dispatch({type:ORDER_CREATE_RESET});
+        }
+    },[navigate,success,order,dispatch])
     return (
         <div>
             <CheckOutStep step1 step2 step3 step4/>
@@ -80,7 +97,7 @@ const PlaceOrderScreen =()=>{
                             <li>
                                 <div className="row">
                                     <div>Item</div>
-                                    <div>$ {cart.itemPrice.toFixed(2)}</div>
+                                    <div>$ {cart.itemsPrice.toFixed(2)}</div>
                                 </div>
                             </li>
                             <li>
@@ -98,11 +115,15 @@ const PlaceOrderScreen =()=>{
                             <li>
                                 <div className="row">
                                     <div><strong>Order Total</strong></div>
-                                    <div><strong>${cart.orderTotal}</strong></div>
+                                    <div><strong>${cart.totalPrice}</strong></div>
                                 </div>
                             </li>
                             <li>
-                                <button className='primary block'>Place Order</button>
+                                <button 
+                                className='primary block'
+                                disabled={cart.cartItems.length===0}
+                                onClick={placeOrderHandler}
+                                >Place Order</button>
                             </li>
                         </ul>
                     </div>
