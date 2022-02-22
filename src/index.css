@@ -104,7 +104,10 @@ button.block {
   color: #a02020;
   background-color: #ffe0e0;
 }
-
+.alert-success {
+  color: #20a020;
+  background-color: #eeffe0;
+}
 .grid-container{
   display: grid;
   grid-template-columns: 1fr;
