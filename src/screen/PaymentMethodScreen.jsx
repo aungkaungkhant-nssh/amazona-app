@@ -22,7 +22,7 @@ function PaymentMethodScreen() {
       if(Object.keys(shippingAddress).length===0){
         navigate("/shipping")
       }
-  })
+  },[])
   return (
     <div>
         <CheckOutStep step1 step2 step3/>

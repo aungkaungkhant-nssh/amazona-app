@@ -1,13 +1,12 @@
 import  Axios  from "axios";
 import { CART_EMPTY } from "../cart/cartType";
-import { ORDER_CREATE_FAIL, ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS, ORDER_DETAIL_FAIL, ORDER_DETAIL_REQUEST, ORDER_DETAIL_SUCCESS } from "./orderType"
+import { ORDER_CREATE_FAIL, ORDER_CREATE_REQUEST, ORDER_CREATE_SUCCESS, ORDER_DETAIL_FAIL, ORDER_DETAIL_REQUEST, ORDER_DETAIL_SUCCESS, ORDER_PAY_FAIL, ORDER_PAY_REQUEST, ORDER_PAY_SUCCESS } from "./orderType"
 
 export const createOrder = (order)=> async(dispatch,getState)=>{
   
     dispatch({type:ORDER_CREATE_REQUEST});
     try{
         const {userSignin:{userInfo}}=getState();
-        console.log(userInfo.token)
         let {data} = await Axios.post('/api/orders',order,{
             headers:{
                 Authorization: `Bearer ${userInfo.token}`
@@ -39,6 +38,25 @@ export const detailsOrder = (orderId) => async(dispatch,getState)=>{
       
         dispatch({
             type:ORDER_DETAIL_FAIL,
+            payload:err.response && err.response.data.message || err.message
+        });
+    }
+}
+
+export const payOrder = (payResult) => async(dispatch,getState)=>{
+    
+    dispatch({type:ORDER_PAY_REQUEST});
+    try{
+        let {userSignin:{userInfo}} = getState();
+        let {data} = await Axios.put(`/api/orders/${payResult._id}/pay`,{...payResult,email_address:userInfo.email},{
+            headers:{
+                Authorization:`Bearer ${userInfo.token}`
+            }
+        })
+        dispatch({type:ORDER_PAY_SUCCESS,payload:data.order})
+    }catch(err){
+        dispatch({
+            type:ORDER_PAY_FAIL,
             payload:err.response && err.response.data.message || err.message
         });
     }

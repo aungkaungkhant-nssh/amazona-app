@@ -5,18 +5,23 @@ import { useParams} from 'react-router';
 import { Link } from 'react-router-dom';
 import Loadingbox from '../components/LoadingBox';
 import Messagebox from '../components/MessageBox';
-import { detailsOrder } from '../redux/order/orderAction';
+import { detailsOrder,payOrder } from '../redux/order/orderAction';
 
 function OrderScreen() {
   const params = useParams();
   const dispatch = useDispatch();
   const orderDetail = useSelector(state => state.orderDetail);
+  const orderPay = useSelector(state => state.orderPay);
   const {loading,order,error} = orderDetail;
   
+
   useEffect(()=>{
-    dispatch(detailsOrder(params.id));
-  },[params.id]);
-  console.log(order)
+        dispatch(detailsOrder(params.id));
+  },[params.id,dispatch,orderPay.success]);
+  
+  const successPaymentHandler=()=>{
+    dispatch(payOrder({_id:order._id,status:true}))
+  }
   return (
       <div>
           {
@@ -64,7 +69,7 @@ function OrderScreen() {
                                                 </li>
                                                 <li>
                                                     {
-                                                        order.isDelivered ? (
+                                                        order.isPaid ? (
                                                             <Messagebox variant="success">
                                                                  Paid at {order.paidAt}
                                                             </Messagebox>
@@ -134,7 +139,13 @@ function OrderScreen() {
                                                 <div><strong>${order.totalPrice}</strong></div>
                                             </div>
                                         </li>
-                                    
+                                        <li>
+                                            {
+                                                !order.isPaid && (
+                                                    <button className="block primary" onClick={()=>successPaymentHandler()}>Paypal</button>
+                                                )
+                                            }
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
