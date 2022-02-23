@@ -11,6 +11,7 @@ import ShippingAddressScreen from './screen/ShippingAddressScreen';
 import PaymentMethodScreen from './screen/PaymentMethodScreen';
 import PlaceOrderScreen from './screen/PlaceOrderScreen';
 import OrderScreen from './screen/OrderScreen';
+import OrderHistoryScreen from './screen/OrderHistoryScreen';
 function App() {
    const cart=useSelector((state) => state.cart);
    const {cartItems}=cart;
@@ -48,6 +49,9 @@ function App() {
                                 </Link>
                                 <ul className="dropdown-content">
                                 <li>
+                                    <Link to="/orderhistory">Order History</Link>
+                                </li>
+                                <li>
                                     <Link to="#signout" onClick={signoutHandler}>
                                     Sign Out
                                     </Link>
@@ -74,6 +78,7 @@ function App() {
                 <Route path="/payment" element={<PaymentMethodScreen />}></Route>
                 <Route path="/placeorder" element={<PlaceOrderScreen />}></Route>
                 <Route path="/order/:id" element={<OrderScreen />}></Route>
+                <Route path="/orderhistory" element={<OrderHistoryScreen />}></Route>
             </Routes>
         </main>
         <footer className="row center">
