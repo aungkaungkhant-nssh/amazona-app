@@ -14,6 +14,8 @@ import OrderScreen from './screen/OrderScreen';
 import OrderHistoryScreen from './screen/OrderHistoryScreen';
 import ProfileScreen from './screen/ProfileScreen';
 import PrivateRoute from './components/PrivateRoute';
+import AdminRoute from './components/AdminRoute';
+import ProductListScreen from './screen/ProductListScreen';
 function App() {
    const cart=useSelector((state) => state.cart);
    const {cartItems}=cart;
@@ -79,7 +81,7 @@ function App() {
                                         <Link to="/dashboard">Dashboard</Link>
                                     </li>
                                     <li>
-                                        <Link to="/products">Products</Link>
+                                        <Link to="/productlist">Products</Link>
                                     </li>
                                     <li>
                                         <Link to="/orders">Orders</Link>
@@ -106,8 +108,12 @@ function App() {
                 <Route path="/payment" element={<PaymentMethodScreen />}></Route>
                 <Route path="/placeorder" element={<PlaceOrderScreen />}></Route>
                 <Route path="/order/:id" element={<OrderScreen />}></Route>
+
                 <Route path="/orderhistory" element={<PrivateRoute><OrderHistoryScreen /></PrivateRoute>}></Route>
+
                 <Route path="/profile" element={<PrivateRoute><ProfileScreen /></PrivateRoute>}></Route>
+
+                <Route path="/productlist" element={<AdminRoute><ProductListScreen /></AdminRoute>}></Route>
             </Routes>
         </main>
         <footer className="row center">
