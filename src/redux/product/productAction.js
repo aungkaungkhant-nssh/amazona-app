@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { PRODUCT_DETAIL_FAIL, PRODUCT_DETAIL_REQUEST, PRODUCT_DETAIL_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS } from "./productType"
+import { PRODUCT_DETAIL_FAIL, PRODUCT_DETAIL_REQUEST, PRODUCT_DETAIL_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS,PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_FAIL, PRODUCT_CREATE_SUCCESS } from "./productType"
 
 export const listProducts = ()=>{
     return dispatch =>{
@@ -32,7 +32,7 @@ export const detailProduct =(productId) => async(dispatch)=>{
                payload:data
            })
         }catch(err){
-            console.log(err.response)
+          
             dispatch({
                 type:PRODUCT_DETAIL_FAIL,
                 payload:err.response && err.response.data.message || err.message
@@ -40,3 +40,24 @@ export const detailProduct =(productId) => async(dispatch)=>{
         }
         
 }   
+
+
+export const createProduct = () => async(dispatch,getState)=>{
+    dispatch({type:PRODUCT_CREATE_REQUEST});
+    try{
+        let {userSignin:{userInfo}} = getState();
+
+        let {data} = await Axios.post(`/api/products`,{},{
+            headers:{
+                Authorization: `Bearer ${userInfo.token}`
+            }
+        })
+        dispatch({type:PRODUCT_CREATE_SUCCESS,payload:data})
+    }catch(err){
+        dispatch({
+            type:PRODUCT_CREATE_FAIL,
+            payload:err.response && err.response.data.message || err.message
+        })
+    }
+}
+
