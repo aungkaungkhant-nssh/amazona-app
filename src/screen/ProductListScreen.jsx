@@ -63,7 +63,7 @@ function ProductListScreen() {
                           <td>{product.category}</td>
                           <td>{product.brand}</td>
                           <td>
-                              <button type="button" className="small">
+                              <button type="button" className="small" onClick={()=>navigate(`/product/${product._id}/edit`)}>
                                 Edit
                               </button>
                               <button type="button" className="small" onClick={()=>deleteHandler(product)}>

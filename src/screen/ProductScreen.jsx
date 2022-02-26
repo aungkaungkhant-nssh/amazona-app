@@ -15,7 +15,7 @@ function ProductScreen() {
   const [qty,setQty] = useState(1)
   useEffect(()=>{
     dispatch(detailProduct(params.id));
-  },[])
+  },[params.id])
   const handleClick = ()=>{
     navigate(`/cart/${params.id}?qty=${qty}`)
   }
