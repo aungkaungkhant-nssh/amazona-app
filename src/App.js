@@ -17,6 +17,7 @@ import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
 import ProductListScreen from './screen/ProductListScreen';
 import ProductEditScreen from './screen/ProductEditScreen';
+import OrderListScreen from './screen/OrderListScreen';
 //dd ccc
 function App() {
 
@@ -87,7 +88,7 @@ function App() {
                                         <Link to="/productlist">Products</Link>
                                     </li>
                                     <li>
-                                        <Link to="/orders">Orders</Link>
+                                        <Link to="/orderlist">Orders</Link>
                                     </li>
                                     <li>
                                         <Link to="/users">Users</Link>
@@ -119,6 +120,8 @@ function App() {
                 <Route path="/profile" element={<PrivateRoute><ProfileScreen /></PrivateRoute>}></Route>
 
                 <Route path="/productlist" element={<AdminRoute><ProductListScreen /></AdminRoute>}></Route>
+
+                <Route path="/orderlist" element={<AdminRoute><OrderListScreen /></AdminRoute>}></Route>
                
             </Routes>
         </main>
