@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { PRODUCT_DETAIL_FAIL, PRODUCT_DETAIL_REQUEST, PRODUCT_DETAIL_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS,PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_FAIL, PRODUCT_CREATE_SUCCESS, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_SUCCESS, PRODUCT_UPDATE_FAIL } from "./productType"
+import { PRODUCT_DETAIL_FAIL, PRODUCT_DETAIL_REQUEST, PRODUCT_DETAIL_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS,PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_FAIL, PRODUCT_CREATE_SUCCESS, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_SUCCESS, PRODUCT_UPDATE_FAIL, PRODUCT_DELETE_FAIL,PRODUCT_DELETE_REQUEST,PRODUCT_DELETE_SUCCESS } from "./productType"
 
 export const listProducts = ()=>{
     return dispatch =>{
@@ -74,6 +74,25 @@ export const updateProduct = (id,updateProduct) => async(dispatch,getState)=>{
     }catch(err){
         dispatch({
             type:PRODUCT_UPDATE_FAIL,
+            payload:err.response && err.response.data.message || err.message
+        })
+    }
+}
+
+export const deleteProduct = (product) => async(dispatch,getState)=>{
+    dispatch({type:PRODUCT_DELETE_REQUEST});
+    try{
+        let {userSignin:{userInfo}} = getState();
+        
+        let {data} = await Axios.delete(`/api/products/${product._id}`,{
+            headers:{
+                Authorization:`Bearer ${userInfo.token}`
+            }
+        })
+        dispatch({type:PRODUCT_DELETE_SUCCESS,payload:data})
+    }catch(err){
+        dispatch({
+            type:PRODUCT_DELETE_FAIL,
             payload:err.response && err.response.data.message || err.message
         })
     }
