@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { listOrder } from '../redux/order/orderAction';
+import { deleteOrder, listOrder } from '../redux/order/orderAction';
 
 import MessageBox from '../components/MessageBox';
 import LoadingBox from '../components/LoadingBox';
@@ -10,15 +10,24 @@ function OrderListScreen() {
   const orderList = useSelector((state) => state.orderList);
   const {orders,error,loading} = orderList;
 
+  const orderDelete = useSelector((state) => state.orderDelete);
+  const {error:deletedError,loading:deletedLoading,success:deletedSuccess} = orderDelete;
+
   useEffect(()=>{
     dispatch(listOrder());
-  },[]);
-
+  },[deletedSuccess]);
   
- 
+  const deleteHandler = (order)=>{
+      if(window.confirm("Are you sure want to delete")){
+         dispatch(deleteOrder(order))
+      }
+  }
   return (
     <div>
         <h1>Orders</h1>
+        { deletedLoading && <LoadingBox /> }
+        { deletedError && <MessageBox variant="danger">{deletedError}</MessageBox> }
+
         {
           loading ? (<LoadingBox />)
           : error ? ( <MessageBox variant="danger">{error}</MessageBox> )
@@ -48,7 +57,7 @@ function OrderListScreen() {
                               {order.isDelivered ? order.deliveredAt.substring(0,10) :"No"}
                             </th>
                             <th>
-                              <button type="button" className="small">
+                              <button type="button" className="small" onClick={()=>deleteHandler(order)}>
                                 Delete
                               </button>
                             </th>
