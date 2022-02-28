@@ -1,18 +1,29 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
-import { listUser } from '../redux/user/userAction';
+import { deleteUser, listUser } from '../redux/user/userAction';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import { USER_DELETE_RESET } from '../redux/user/userType';
 
 function UserListScreen() {
   const dispatch = useDispatch();
   const userList = useSelector((state) => state.userList);
   const {loading,error,users}= userList;
+  
+  const userDelete = useSelector((state) => state.userDelete);
+  const {loading:deletedLoading,error:deletedError,success:deletedSuccess} = userDelete;
 
   useEffect(()=>{
+    if(deletedSuccess){
+        dispatch({type:USER_DELETE_RESET});
+    }
     dispatch(listUser());
-  },[]);
+  },[deletedSuccess]);
+
+  const deleteHandler = (id) => {
+      dispatch(deleteUser(id));
+  }
   return (
     <div>
         {
@@ -40,8 +51,10 @@ function UserListScreen() {
                                 <td>{user.isSeller ? "Yes" : "No"}</td>
                                 <td>{user.isAdmin ? "Yes" : "No"}</td>
                                 <td>
+
                                     <button>Edit</button>
-                                    <button>Delete</button>
+                                    <button type="button" className="small"
+                                    onClick={()=>deleteHandler(user._id)}>Delete</button>
                                 </td>
                             </tr>
                         ))
