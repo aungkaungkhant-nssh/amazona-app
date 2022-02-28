@@ -18,6 +18,7 @@ import AdminRoute from './components/AdminRoute';
 import ProductListScreen from './screen/ProductListScreen';
 import ProductEditScreen from './screen/ProductEditScreen';
 import OrderListScreen from './screen/OrderListScreen';
+import UserListScreen from './screen/UserListScreen';
 //dd ccc
 function App() {
 
@@ -91,7 +92,7 @@ function App() {
                                         <Link to="/orderlist">Orders</Link>
                                     </li>
                                     <li>
-                                        <Link to="/users">Users</Link>
+                                        <Link to="/userlist">Users</Link>
                                     </li>
                                 </ul>
                             </div>
@@ -122,6 +123,8 @@ function App() {
                 <Route path="/productlist" element={<AdminRoute><ProductListScreen /></AdminRoute>}></Route>
 
                 <Route path="/orderlist" element={<AdminRoute><OrderListScreen /></AdminRoute>}></Route>
+
+                <Route path="/userlist" element={<AdminRoute><UserListScreen /></AdminRoute>}></Route>
                
             </Routes>
         </main>
