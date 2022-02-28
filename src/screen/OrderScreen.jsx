@@ -3,30 +3,38 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { useParams} from 'react-router';
 import { Link } from 'react-router-dom';
-import Loadingbox from '../components/LoadingBox';
-import Messagebox from '../components/MessageBox';
-import { detailsOrder,payOrder } from '../redux/order/orderAction';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
+import { deliverOrder, detailsOrder,payOrder } from '../redux/order/orderAction';
 
 function OrderScreen() {
   const params = useParams();
   const dispatch = useDispatch();
   const orderDetail = useSelector(state => state.orderDetail);
   const orderPay = useSelector(state => state.orderPay);
+  const userSignin = useSelector(state => state.userSignin);
+  const orderDeliver = useSelector(state => state.orderDeliver);
+  const {loading:deliveredLoading,error:deliveredError,success:deliveredSuccess}
+  =orderDeliver;
+  const {userInfo} = userSignin;
   const {loading,order,error} = orderDetail;
   
 
   useEffect(()=>{
         dispatch(detailsOrder(params.id));
-  },[params.id,dispatch,orderPay.success]);
+  },[params.id,dispatch,orderPay.success,deliveredSuccess]);
   
   const successPaymentHandler=()=>{
     dispatch(payOrder({_id:order._id,status:true}))
   }
+  const deliverHandler = ()=>{
+      dispatch(deliverOrder(params.id));
+  }
   return (
       <div>
           {
-              loading ? <Loadingbox />
-              :error ? <Messagebox variant="danger">{error}</Messagebox>
+              loading ? <LoadingBox />
+              :error ? <MessageBox variant="danger">{error}</MessageBox>
               :(
                 <div>
                     <h1>Order : {params.id}</h1>
@@ -48,11 +56,11 @@ function OrderScreen() {
                                                 <li>
                                                     {
                                                         order.isDelivered ? (
-                                                            <Messagebox variant="success">
+                                                            <MessageBox variant="success">
                                                                  Delivered at {order.deliveredAt}
-                                                            </Messagebox>
+                                                            </MessageBox>
                                                         ):(
-                                                            <Messagebox variant="danger">Not delivered</Messagebox>
+                                                            <MessageBox variant="danger">Not delivered</MessageBox>
                                                         )
                                                     }
                                                 </li>
@@ -70,11 +78,11 @@ function OrderScreen() {
                                                 <li>
                                                     {
                                                         order.isPaid ? (
-                                                            <Messagebox variant="success">
+                                                            <MessageBox variant="success">
                                                                  Paid at {order.paidAt}
-                                                            </Messagebox>
+                                                            </MessageBox>
                                                         ):(
-                                                            <Messagebox variant="danger">Not Paid</Messagebox>
+                                                            <MessageBox variant="danger">Not Paid</MessageBox>
                                                         )
                                                     }
                                                 </li>
@@ -146,6 +154,22 @@ function OrderScreen() {
                                                 )
                                             }
                                         </li>
+                                        {
+                                            userInfo.isAdmin && order.isPaid &&  ! order.isDelivered &&(
+                                                <li>
+                                                    { deliveredLoading && <LoadingBox /> }
+                                                    { deliveredError && 
+                                                    <MessageBox>{deliveredError}</MessageBox>}
+                                                    <button
+                                                        type="button"
+                                                        className="primary block"
+                                                        onClick={deliverHandler}
+                                                     >
+                                                        Deliver Order
+                                                    </button>
+                                                </li>
+                                            )
+                                        }
                                     </ul>
                                 </div>
                             </div>
