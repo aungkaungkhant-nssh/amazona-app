@@ -4,7 +4,8 @@ import { useDispatch } from 'react-redux'
 import { deleteUser, listUser } from '../redux/user/userAction';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { USER_DELETE_RESET } from '../redux/user/userType';
+import { USER_DELETE_RESET, USER_DETAIL_RESET } from '../redux/user/userType';
+import {useNavigate} from 'react-router-dom';
 
 function UserListScreen() {
   const dispatch = useDispatch();
@@ -14,13 +15,17 @@ function UserListScreen() {
   const userDelete = useSelector((state) => state.userDelete);
   const {loading:deletedLoading,error:deletedError,success:deletedSuccess} = userDelete;
 
+  const navigate = useNavigate();
+
   useEffect(()=>{
     if(deletedSuccess){
         dispatch({type:USER_DELETE_RESET});
     }
+    dispatch({type:USER_DETAIL_RESET});
     dispatch(listUser());
   },[deletedSuccess]);
 
+  
   const deleteHandler = (id) => {
       dispatch(deleteUser(id));
   }
@@ -51,8 +56,7 @@ function UserListScreen() {
                                 <td>{user.isSeller ? "Yes" : "No"}</td>
                                 <td>{user.isAdmin ? "Yes" : "No"}</td>
                                 <td>
-
-                                    <button>Edit</button>
+                                    <button onClick={()=>navigate(`/user/${user._id}/edit`)}>Edit</button>
                                     <button type="button" className="small"
                                     onClick={()=>deleteHandler(user._id)}>Delete</button>
                                 </td>

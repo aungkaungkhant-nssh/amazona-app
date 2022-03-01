@@ -5,6 +5,7 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import Loadingbox from '../components/LoadingBox';
 import Messagebox from '../components/MessageBox';
+import { USER_DELETE_RESET, USER_DETAIL_RESET } from '../redux/user/userType';
 
 function ProfileScreen() {
   const [name,setName] = useState("");
@@ -18,16 +19,23 @@ function ProfileScreen() {
   const userProfileUpdate = useSelector(state => state.userProfileUpdate);
   const {loading:updateLoading,error:updateError,success:successUpdate}= userProfileUpdate;
 
+  let userSignin = useSelector((state)=> state.userSignin);
+  let {userInfo} = userSignin;
  
   useEffect(()=>{
-        if(!user){
-            dispatch(detailUser());
+        if(!user ){
+            
+            dispatch(detailUser(userInfo.id));
         }else{
             setName(user.name);
             setEmail(user.email);
         }
-        
-  },[dispatch,user]);
+    
+  },[dispatch,user,userInfo.id]);
+  
+  useEffect(()=>{
+    dispatch({type:USER_DETAIL_RESET})
+  },[])
   
   
   const updateSumbitHandler = (e)=>{
