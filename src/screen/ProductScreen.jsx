@@ -16,7 +16,6 @@ function ProductScreen() {
   const dispatch = useDispatch();
   const [qty,setQty] = useState(1)
   useEffect(()=>{
-      
       dispatch(detailProduct(params.id));
   
   },[params.id,dispatch]);
@@ -24,7 +23,7 @@ function ProductScreen() {
   const handleClick = ()=>{
     navigate(`/cart/${params.id}?qty=${qty}`)
   }
-
+ 
   return (
     <div>
          {
@@ -50,6 +49,16 @@ function ProductScreen() {
               <div className="col-1">
                   <div className="card card-body">
                         <ul>
+                          <li>
+                            <div className="row">
+                                    <div>Seller {' '}</div>
+                                    <h2>
+                                      <Link to={`/seller/${product.seller._id}`}>
+                                        {product.seller.seller.name}
+                                      </Link>
+                                    </h2>
+                            </div>
+                          </li>
                             <li>
                                 <div className="row">
                                     <div>Price</div>
