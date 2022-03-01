@@ -20,6 +20,7 @@ import ProductEditScreen from './screen/ProductEditScreen';
 import OrderListScreen from './screen/OrderListScreen';
 import UserListScreen from './screen/UserListScreen';
 import UserEditScreen from './screen/UserEditScreen';
+import SellerRoute from './components/SellerRoute'
 //dd ccc
 function App() {
 
@@ -76,6 +77,23 @@ function App() {
                             <Link to="/signin">Sign In</Link>
                         )
                     }
+                      {
+                        userInfo && userInfo.isSeller && (
+                            <div className="dropdown">
+                                  <Link to="#admin">
+                                         Seller <i className="fa fa-caret-down"></i>
+                                 </Link>
+                                <ul className="dropdown-content">
+                                    <li>
+                                        <Link to="/productlist/seller">Products</Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/orderlist/seller">Orders</Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        )
+                    }
                     {
                         userInfo && userInfo.isAdmin && (
                             <div className="dropdown">
@@ -115,7 +133,9 @@ function App() {
                 <Route path="/shipping" element={<ShippingAddressScreen />}></Route>
                 <Route path="/payment" element={<PaymentMethodScreen />}></Route>
                 <Route path="/placeorder" element={<PlaceOrderScreen />}></Route>
-                <Route path="/order/:id" element={<OrderScreen />}></Route>
+
+          
+                <Route path="/order/:id" element={<PrivateRoute><OrderScreen /></PrivateRoute>}></Route>
 
                 
                 <Route path="/orderhistory" element={<PrivateRoute><OrderHistoryScreen /></PrivateRoute>}></Route>
@@ -129,6 +149,11 @@ function App() {
                 <Route path="/userlist" element={<AdminRoute><UserListScreen /></AdminRoute>}></Route>
                 
                <Route path="user/:id/edit" element={<AdminRoute><UserEditScreen /></AdminRoute>}></Route>
+
+               <Route path="/productlist/seller" element={<SellerRoute><ProductListScreen /></SellerRoute>}></Route>
+                
+               <Route path="/orderlist/seller" element={<SellerRoute><OrderListScreen /></SellerRoute>}></Route>
+
             </Routes>
         </main>
         <footer className="row center">

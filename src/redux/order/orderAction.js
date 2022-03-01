@@ -80,11 +80,11 @@ export const historyOrder = () => async(dispatch,getState)=>{
     }
 }
 
-export const listOrder = () => async(dispatch,getState)=>{
+export const listOrder = (seller) => async(dispatch,getState)=>{
     dispatch({type:ORDER_LIST_REQUEST});
     try{
         let {userSignin:{userInfo}} = getState();
-        let {data} = await Axios.get('/api/orders',{
+        let {data} = await Axios.get(`/api/orders?seller=${seller}`,{
             headers:{
                 Authorization:`Bearer ${userInfo.token}`
             }

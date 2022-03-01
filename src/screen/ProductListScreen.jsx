@@ -4,22 +4,29 @@ import { useDispatch } from 'react-redux'
 import { createProduct, listProducts,deleteProduct } from '../redux/product/productAction';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import Loadingbox from '../components/LoadingBox';
 import Messagebox from '../components/MessageBox';
 import { PRODUCT_CREATE_RESET, PRODUCT_DELETE_RESET } from '../redux/product/productType';
 
 function ProductListScreen() {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const sellerMode = location.pathname.indexOf("/seller")>=0;
 
   const productList = useSelector((state) => state.productList);
   const {products,error,loading} = productList;
   const productDelete = useSelector((state) => state.productDelete);
   const {error:deletedError,loading:deletedLoading,success:deletedSuccess} = productDelete;
 
+  const userSignin = useSelector((state)=>state.userSignin);
+  const {userInfo} = userSignin;
+
   const navigate = useNavigate();
   const productCreate = useSelector((state)=>state.productCreate);
   const {loading:createdLoading,error:createdError,success:createdSuccess,product:createdProduct} = productCreate;
+
+
 
   useEffect(()=>{
     if(createdSuccess) {
@@ -28,8 +35,8 @@ function ProductListScreen() {
     }
     if(deletedSuccess) dispatch({type:PRODUCT_DELETE_RESET});
 
-    dispatch(listProducts());
-  },[createdSuccess,createdProduct,deletedSuccess]);
+    dispatch(listProducts( sellerMode ? userInfo.id : ""));
+  },[createdSuccess,createdProduct,deletedSuccess,sellerMode]);
   
   const deleteHandler =(product)=>{
       dispatch(deleteProduct(product))
