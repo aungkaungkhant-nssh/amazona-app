@@ -21,6 +21,7 @@ import OrderListScreen from './screen/OrderListScreen';
 import UserListScreen from './screen/UserListScreen';
 import UserEditScreen from './screen/UserEditScreen';
 import SellerRoute from './components/SellerRoute'
+import SellerScreen from './screen/SellerScreen';
 //dd ccc
 function App() {
 
@@ -123,6 +124,7 @@ function App() {
         <main>
             <Routes>
                 <Route path="/cart/:id" element={<CartScreen />}/>
+                <Route path ="/seller/:id" element={<SellerScreen />} />
                 <Route path="/product/:id/edit" element={<ProductEditScreen />} />
                 <Route path="/cart/" element={<CartScreen />}/>
 

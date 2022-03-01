@@ -155,6 +155,13 @@ a.brand{
 .row.top{
   align-items: flex-start;
 }
+.row.start {
+  justify-content: flex-start;
+}
+
+.p-1{
+  padding: 1rem;
+}
 /* card */
 .card{
   border: 0.1rem #c0c0c0 solid;
