@@ -4,17 +4,26 @@ import { deleteOrder, listOrder } from '../redux/order/orderAction';
 
 import MessageBox from '../components/MessageBox';
 import LoadingBox from '../components/LoadingBox';
+import { useLocation, useNavigate } from 'react-router';
 
 function OrderListScreen() {
+  let location = useLocation();
+  let sellerMode = location.pathname.indexOf("/seller")>=0;
   const dispatch = useDispatch();
   const orderList = useSelector((state) => state.orderList);
   const {orders,error,loading} = orderList;
+  
 
   const orderDelete = useSelector((state) => state.orderDelete);
   const {error:deletedError,loading:deletedLoading,success:deletedSuccess} = orderDelete;
 
+  const userSignin = useSelector((state) =>state.userSignin);
+  const {userInfo} = userSignin;
+
+  const navigate = useNavigate();
+
   useEffect(()=>{
-    dispatch(listOrder());
+    dispatch(listOrder(sellerMode ? userInfo.id :""));
   },[deletedSuccess]);
   
   const deleteHandler = (order)=>{
@@ -57,6 +66,15 @@ function OrderListScreen() {
                               {order.isDelivered ? order.deliveredAt.substring(0,10) :"No"}
                             </th>
                             <th>
+                            <button
+                                type="button"
+                                className="small"
+                                onClick={() => {
+                                 navigate(`/order/${order._id}`);
+                                }}
+                              >
+                                 Details
+                              </button>
                               <button type="button" className="small" onClick={()=>deleteHandler(order)}>
                                 Delete
                               </button>
