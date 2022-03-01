@@ -19,6 +19,7 @@ import ProductListScreen from './screen/ProductListScreen';
 import ProductEditScreen from './screen/ProductEditScreen';
 import OrderListScreen from './screen/OrderListScreen';
 import UserListScreen from './screen/UserListScreen';
+import UserEditScreen from './screen/UserEditScreen';
 //dd ccc
 function App() {
 
@@ -116,6 +117,7 @@ function App() {
                 <Route path="/placeorder" element={<PlaceOrderScreen />}></Route>
                 <Route path="/order/:id" element={<OrderScreen />}></Route>
 
+                
                 <Route path="/orderhistory" element={<PrivateRoute><OrderHistoryScreen /></PrivateRoute>}></Route>
 
                 <Route path="/profile" element={<PrivateRoute><ProfileScreen /></PrivateRoute>}></Route>
@@ -125,7 +127,8 @@ function App() {
                 <Route path="/orderlist" element={<AdminRoute><OrderListScreen /></AdminRoute>}></Route>
 
                 <Route path="/userlist" element={<AdminRoute><UserListScreen /></AdminRoute>}></Route>
-               
+                
+               <Route path="user/:id/edit" element={<AdminRoute><UserEditScreen /></AdminRoute>}></Route>
             </Routes>
         </main>
         <footer className="row center">
