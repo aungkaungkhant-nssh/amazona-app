@@ -28,7 +28,7 @@ function SellerScreen() {
                 loading ? ( <LoadingBox></LoadingBox> )
                 : error ? ( <MessageBox variant="danger">{error}</MessageBox> )
                 :(
-                    <ul className="cart card-body">
+                    <ul className="card card-body">
                         <li>
                             <div className="row start">
                                 <div className="p-1">
