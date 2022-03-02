@@ -83,6 +83,9 @@ button.block {
   flex: 2 1 50rem;
   /* text-align: center; */
 }
+.col-3 {
+  flex: 32 1 75rem;
+}
 /* Alert */
 .success {
   color: #20a020;
@@ -272,4 +275,9 @@ img.small{
 }
 .table button {
   margin: 0 0.2rem;
+}
+
+/* Carousel */
+.carousel .slide img {
+  max-width: 30rem;
 }
