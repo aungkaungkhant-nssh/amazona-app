@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { detailProduct } from '../redux/product/productAction';
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
+import { addToCart } from '../redux/cart/cartAction';
 
 function ProductScreen() {
   let params = useParams();
@@ -21,7 +22,8 @@ function ProductScreen() {
   },[params.id,dispatch]);
 
   const handleClick = ()=>{
-    navigate(`/cart/${params.id}?qty=${qty}`)
+    dispatch(addToCart(params.id,qty))
+    navigate(`/cart/`)
   }
  
   return (
@@ -53,8 +55,8 @@ function ProductScreen() {
                             <div className="row">
                                     <div>Seller {' '}</div>
                                     <h2>
-                                      <Link to={`/seller/${product.seller._id}`}>
-                                        {product.seller.seller.name}
+                                      <Link to={`/seller/${product?.seller?._id}`}>
+                                        {product?.seller?.seller?.name}
                                       </Link>
                                     </h2>
                             </div>
