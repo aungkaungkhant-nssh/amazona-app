@@ -8,16 +8,11 @@ const CartScreen = () => {
     let params= useParams();
     const [searchParams] = useSearchParams();
     const cart = useSelector(state => state.cart);
-    const {cartItems} =cart;
+    const {cartItems,error} =cart;
     const qty =+searchParams.get("qty")
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    useEffect(()=>{
-        if(params.id){
-            dispatch(addToCart(params.id,qty))
-        }
-        
-    },[params.id,qty]);
+   
     const checkoutHandler=()=>{
         navigate(`/signin?redirect=shipping`)
     }
@@ -28,6 +23,7 @@ const CartScreen = () => {
         <div className="row top">
             <div className="col-2">
                 <h1>Shopping cart</h1>
+                {error && <Messagebox variant="danger">{error}</Messagebox>}
                 {
                     cartItems.length===0 
                     ?(<Messagebox variant="danger">
