@@ -22,7 +22,9 @@ import UserListScreen from './screen/UserListScreen';
 import UserEditScreen from './screen/UserEditScreen';
 import SellerRoute from './components/SellerRoute'
 import SellerScreen from './screen/SellerScreen';
-//dd ccc
+import SearchBox from './components/SearchBox';
+import SearchScreen from './screen/SearchScreen';
+
 function App() {
 
    const cart=useSelector((state) => state.cart);
@@ -42,6 +44,9 @@ function App() {
         <header className="row">
             <div>
                 <Link to="/" className="brand">amazona</Link>
+            </div>
+            <div>
+                <SearchBox />
             </div>
             <div>
                 <Link to="/cart">
@@ -123,6 +128,7 @@ function App() {
         </header>
         <main>
             <Routes>
+                <Route path="/search" element={<SearchScreen />} exact></Route>
                 <Route path="/cart/:id" element={<CartScreen />}/>
                 <Route path ="/seller/:id" element={<SellerScreen />} />
                 <Route path="/product/:id/edit" element={<ProductEditScreen />} />
