@@ -9,17 +9,22 @@ import Product from '../components/Product'
 function SearchScreen() {
   const [searchParams] = useSearchParams();
   let searchName = searchParams.get("name");
+  let searchCategory = searchParams.get("category");
   const dispatch = useDispatch();
   const productList = useSelector((state)=>state.productList);
   const {products,loading,error} = productList;
   
   useEffect(()=>{
-    if(searchName==""){
+    if(searchName=="" || searchName==null){
       searchName="all";
     }
-    dispatch(listProducts("",searchName==="all" ? "" :searchName));
-  },[searchName]);
-  console.log(products);
+    if(searchCategory=="" || searchCategory==null){
+      searchCategory="all";
+    }
+    dispatch(listProducts("", searchName==="all" ? "" :searchName,searchCategory==="all"? " ":searchCategory));
+
+  },[searchName,searchCategory]);
+
   return (
     <div>
       <div className="row">

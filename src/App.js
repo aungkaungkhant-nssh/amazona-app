@@ -1,5 +1,6 @@
 import './App.css';
-import { BrowserRouter,Routes,Route,Link } from "react-router-dom";
+import React, { useEffect } from 'react'
+import { BrowserRouter,Routes,Route,Link, useSearchParams } from "react-router-dom";
 import HomeScreen from './screen/HomeScreen';
 import ProductScreen from './screen/ProductScreen';
 import CartScreen from './screen/CartScreen';
@@ -24,29 +25,51 @@ import SellerRoute from './components/SellerRoute'
 import SellerScreen from './screen/SellerScreen';
 import SearchBox from './components/SearchBox';
 import SearchScreen from './screen/SearchScreen';
+import { useState } from 'react';
+import { listProductCategories } from './redux/product/productAction';
+import Loadingbox from './components/LoadingBox';
+import Messagebox from './components/MessageBox';
+
 
 function App() {
-
+    
+   const [name,setName] = useState("");
    const cart=useSelector((state) => state.cart);
    const {cartItems}=cart;
    const userSignin = useSelector((state) => state.userSignin);
-
+   const [sidebarIsOpen,setsidebarIsOpen] = useState(false)
 
    const {userInfo}= userSignin;
    const dispatch = useDispatch();
+
+   const productListCategories= useSelector((state)=>state.productListCategories);
+   const {categories,loading,error} = productListCategories;
+  
    const signoutHandler=()=>{
-        dispatch(signout())
+        dispatch(signout());
    }
+
+   const getQueryname = (n)=>{
+       setName(n);
+   }
+   useEffect(() => {
+       dispatch(listProductCategories());
+   }, []);
    
+
   return (
     <BrowserRouter>
          <div className="grid-container">
         <header className="row">
             <div>
+                <button type="button" className="open-sidebar"
+                onClick={()=>setsidebarIsOpen(true)}>
+                    <i className="fa fa-bars"></i>
+                </button>
                 <Link to="/" className="brand">amazona</Link>
             </div>
             <div>
-                <SearchBox />
+                <SearchBox getQueryname={getQueryname}/>
             </div>
             <div>
                 <Link to="/cart">
@@ -126,6 +149,27 @@ function App() {
                 
             </div>
         </header>
+        <aside className={sidebarIsOpen ? "open" :""}>
+            <ul className="categories">
+                <li>
+                    <strong>Categories</strong>
+                    <button  className="close-sidebar" onClick={()=>setsidebarIsOpen(false)}>
+                        <i className="fa fa-close"></i>
+                    </button>
+                </li>   
+                {
+                    loading ? (<Loadingbox />)
+                    :error ? ( <Messagebox variant="danger">{error}</Messagebox> )
+                    :(
+                        categories.map((cat)=>(
+                            <li key={cat}>
+                                <Link to={`/search?name=${name}&category=${cat}`} onClick={()=>setsidebarIsOpen(false)}>{cat}</Link>
+                            </li>
+                        ))
+                    )
+                }    
+            </ul>
+        </aside>
         <main>
             <Routes>
                 <Route path="/search" element={<SearchScreen />} exact></Route>
