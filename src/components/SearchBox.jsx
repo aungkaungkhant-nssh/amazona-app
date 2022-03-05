@@ -11,11 +11,12 @@ function SearchBox({getQueryname}) {
   const handleSubmit = (e)=>{
     e.preventDefault();
     let category =searchParams.get("category");
-    
+   
     if(category){
       navigate(`/search?name=${name || "all"}&category=${category}`);
     }else{
-      navigate(`/search?name=${name || "all"}`);
+      
+      navigate(`/search?name=${name || "all"}&order=newest`);
     }
     
     getQueryname(name || "");

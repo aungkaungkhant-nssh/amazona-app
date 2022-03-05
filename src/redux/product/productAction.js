@@ -1,14 +1,14 @@
 import Axios from "axios";
 import { PRODUCT_DETAIL_FAIL, PRODUCT_DETAIL_REQUEST, PRODUCT_DETAIL_SUCCESS, PRODUCT_LIST_FAIL, PRODUCT_LIST_REQUEST, PRODUCT_LIST_SUCCESS,PRODUCT_CREATE_REQUEST, PRODUCT_CREATE_FAIL, PRODUCT_CREATE_SUCCESS, PRODUCT_UPDATE_REQUEST, PRODUCT_UPDATE_SUCCESS, PRODUCT_UPDATE_FAIL, PRODUCT_DELETE_FAIL,PRODUCT_DELETE_REQUEST,PRODUCT_DELETE_SUCCESS, PRODUCT_CATEGORY_LIST_REQUEST, PRODUCT_CATEGORY_LIST_FAIL, PRODUCT_CATEGORY_LIST_SUCCESS } from "./productType"
 
-export const listProducts = (seller="",name="",category="")=>{
+export const listProducts = (seller="",name="",category="",order="",min="",max="",rating="")=>{
    
     return dispatch =>{
         dispatch({
             type:PRODUCT_LIST_REQUEST
         })
       
-        Axios.get(`/api/products?seller=${seller}&name=${name}&category=${category}`)
+        Axios.get(`/api/products?seller=${seller}&name=${name}&category=${category}&order=${order}&min=${min}&max=${max}&rating=${rating}`)
         .then((res)=>{
             dispatch({
                 type:PRODUCT_LIST_SUCCESS,
