@@ -17,9 +17,10 @@ function SearchScreen() {
   let searchMin = searchParams.get("min");
   let searchMax = searchParams.get("max");
   let searchRating = searchParams.get("rating");
+  let pageNumber = searchParams.get("pageNumber") || 1;
   const dispatch = useDispatch();
   const productList = useSelector((state)=>state.productList);
-  const {products,loading,error} = productList;
+  const {products,loading,error,page,pages} = productList;
   const productListCategories = useSelector((state)=>state.productListCategories);
   const {loading:loadingCategories,error:errorCategories,categories}= productListCategories;
   const navigate = useNavigate();
@@ -36,6 +37,7 @@ function SearchScreen() {
   
     dispatch(listProducts(
       "",
+       pageNumber,
        searchName==="all" ? "" : searchName,
        searchCategory==="all" ? "": searchCategory,
        sortOrder,
@@ -44,7 +46,7 @@ function SearchScreen() {
        searchRating
     ));
     
-  },[searchName,searchCategory,sortOrder,searchMin,searchMax,searchRating]);
+  },[searchName,searchCategory,sortOrder,searchMin,searchMax,searchRating,pageNumber]);
 
   const getUrl = (filter)=>{
     let category = filter.category || searchCategory || "all";
@@ -53,7 +55,8 @@ function SearchScreen() {
     let min=  filter.min ? filter.min : filter.min==0 ? 0 : searchMin || 0;
     let max = filter.max ? filter.max : filter.max==0 ? 0 : searchMax || 100000;
     let rating = filter.rating || searchRating || 0;
-    return `/search?name=${name}&category=${category}&order=${order}&min=${min}&max=${max}&rating=${rating}`
+    let pnumber = filter.pnumber || pageNumber;
+    return `/search?name=${name}&pageNumber=${pnumber}&category=${category}&order=${order}&min=${min}&max=${max}&rating=${rating}`
   }
   const handleOrderChange = (e)=>{
     if(searchCategory=="" || searchCategory==null){
@@ -150,6 +153,17 @@ function SearchScreen() {
                   {
                     products.map((product)=>(
                         <Product key={product._id} product={product} />              
+                    ))
+                  }
+                </div>
+                <div className="row center pagination">
+                  {
+                    [...Array(pages).keys()].map((x)=>(
+                      <Link 
+                          to={getUrl({pnumber:`${x+1}`})}
+                          className={x+1 === pageNumber ? "active" : ""} >
+                          {x+1}
+                      </Link>
                     ))
                   }
                 </div>
