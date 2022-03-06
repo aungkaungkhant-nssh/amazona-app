@@ -10,7 +10,7 @@ export const productListReducer = (state = productInitialState,action)=>{
         case PRODUCT_LIST_REQUEST:
             return {loading:true,products:[],error:null}
         case PRODUCT_LIST_SUCCESS:
-            return {loading:false,products:[...action.payload],error:null}
+            return {loading:false,products:[...action.payload.products],error:null,page:action.payload.page,pages:action.payload.pages}
         case PRODUCT_LIST_FAIL:
             return {loading:false,products:[],error:action.payload}
         default:return state;

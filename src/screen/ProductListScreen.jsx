@@ -8,14 +8,17 @@ import { useLocation, useNavigate } from 'react-router';
 import Loadingbox from '../components/LoadingBox';
 import Messagebox from '../components/MessageBox';
 import { PRODUCT_CREATE_RESET, PRODUCT_DELETE_RESET } from '../redux/product/productType';
+import {useSearchParams,Link} from 'react-router-dom'
 
 function ProductListScreen() {
+  const [searchParams] = useSearchParams();
+  const pageNumber = Number(searchParams.get("pageNumber")) || 1;
   const dispatch = useDispatch();
   const location = useLocation();
   const sellerMode = location.pathname.indexOf("/seller")>=0;
 
   const productList = useSelector((state) => state.productList);
-  const {products,error,loading} = productList;
+  const {products,error,loading,page,pages} = productList;
   const productDelete = useSelector((state) => state.productDelete);
   const {error:deletedError,loading:deletedLoading,success:deletedSuccess} = productDelete;
 
@@ -27,7 +30,6 @@ function ProductListScreen() {
   const {loading:createdLoading,error:createdError,success:createdSuccess,product:createdProduct} = productCreate;
 
 
-
   useEffect(()=>{
     if(createdSuccess) {
       dispatch({type:PRODUCT_CREATE_RESET});
@@ -35,8 +37,8 @@ function ProductListScreen() {
     }
     if(deletedSuccess) dispatch({type:PRODUCT_DELETE_RESET});
 
-    dispatch(listProducts( sellerMode ? userInfo.id : ""));
-  },[createdSuccess,createdProduct,deletedSuccess,sellerMode]);
+    dispatch(listProducts(sellerMode ? userInfo.id : "",pageNumber));
+  },[createdSuccess,createdProduct,deletedSuccess,sellerMode,pageNumber]);
   
   const deleteHandler =(product)=>{
       dispatch(deleteProduct(product))
@@ -44,6 +46,7 @@ function ProductListScreen() {
   const createHandler = ()=>{
     dispatch(createProduct());
   }
+
   return (
     <div>
         <div className="row">
@@ -63,6 +66,7 @@ function ProductListScreen() {
           loading ? ( <LoadingBox></LoadingBox> )
           :error ? ( <MessageBox variant="danger">{error}</MessageBox> )
           :(
+            <>
             <table className="table">
                 <thead>
                   <tr>
@@ -96,6 +100,19 @@ function ProductListScreen() {
                   }
                 </tbody>
             </table>
+            <div className="row center pagination">
+            {
+              [...Array(pages).keys()].map((x)=>(
+                <Link 
+                  to={`/productList?pageNumber=${x+1}`}
+                  className={x+1 === pageNumber ? "active" : ""}
+                  >
+                    {x+1}
+                </Link>
+              ))
+            }
+            </div>
+           </>
           )
         }
     </div>

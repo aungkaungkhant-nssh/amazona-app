@@ -29,6 +29,7 @@ import { useState } from 'react';
 import { listProductCategories } from './redux/product/productAction';
 import Loadingbox from './components/LoadingBox';
 import Messagebox from './components/MessageBox';
+import MapScreen from './screen/MapScreen';
 
 
 function App() {
@@ -206,6 +207,7 @@ function App() {
                 
                <Route path="/orderlist/seller" element={<SellerRoute><OrderListScreen /></SellerRoute>}></Route>
 
+                <Route path="/map" element={<PrivateRoute><MapScreen /></PrivateRoute>}></Route>
             </Routes>
         </main>
         <footer className="row center">
