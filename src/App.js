@@ -30,6 +30,7 @@ import { listProductCategories } from './redux/product/productAction';
 import Loadingbox from './components/LoadingBox';
 import Messagebox from './components/MessageBox';
 import MapScreen from './screen/MapScreen';
+import DashboardScreen from './screen/DashboardScreen';
 
 
 function App() {
@@ -208,6 +209,8 @@ function App() {
                <Route path="/orderlist/seller" element={<SellerRoute><OrderListScreen /></SellerRoute>}></Route>
 
                 <Route path="/map" element={<PrivateRoute><MapScreen /></PrivateRoute>}></Route>
+
+                <Route path="/dashboard" element ={<AdminRoute><DashboardScreen /></AdminRoute>}></Route>
             </Routes>
         </main>
         <footer className="row center">
