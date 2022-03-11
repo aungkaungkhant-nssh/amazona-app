@@ -31,6 +31,8 @@ import Loadingbox from './components/LoadingBox';
 import Messagebox from './components/MessageBox';
 import MapScreen from './screen/MapScreen';
 import DashboardScreen from './screen/DashboardScreen';
+import ChatBox from './components/ChatBox';
+import SupportScreen from './screen/SupportScreen';
 
 
 function App() {
@@ -144,6 +146,9 @@ function App() {
                                     <li>
                                         <Link to="/userlist">Users</Link>
                                     </li>
+                                    <li>
+                                        <Link to="/support">Support</Link>
+                                    </li>
                                 </ul>
                             </div>
                         )
@@ -211,10 +216,15 @@ function App() {
                 <Route path="/map" element={<PrivateRoute><MapScreen /></PrivateRoute>}></Route>
 
                 <Route path="/dashboard" element ={<AdminRoute><DashboardScreen /></AdminRoute>}></Route>
+
+                <Route path='/support' element={<AdminRoute><SupportScreen /></AdminRoute>}></Route>
             </Routes>
         </main>
         <footer className="row center">
-            All right reserved
+            {
+                userInfo && !userInfo.isAdmin && <ChatBox userInfo={userInfo}/>
+            }
+            <div>All right reserved</div>{' '}
         </footer>
         </div>
     </BrowserRouter>
